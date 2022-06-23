@@ -17,9 +17,11 @@ export default function BankActivity(props) {
           </div>
           {
             props.transactions?.map((transaction) => {
+              console.log("ID: ", transaction.id)
               return (
                 <Link to={`/transactions/${transaction.id}`}>
                   <TransactionRow
+                  key = {transaction.id}
                   transaction = {transaction}
                   />
                 </Link>
@@ -38,8 +40,10 @@ export default function BankActivity(props) {
           </div>
           {
             props.transfers?.map((transfer) => {
+              console.log("ID: ", transfer.id)
               return (
                 <TransferRow
+                  key = {transfer.id}
                   transfer = {transfer}
                 />
                 

@@ -21,10 +21,9 @@ export default function Home(props) {
       if(transfersData && transfersData.transfers) {
         props.setTransfers(transfersData.transfers)
       }
+      props.setIsLoading(false)
     } catch (err) {
         props.setError(err)  
-    } finally {
-      props.setIsLoading(false) 
     }
   }
 
@@ -37,23 +36,23 @@ export default function Home(props) {
   }, []);
 
   const handleOnCreateTransaction = async () => {
-  props.setIsCreating(true)
-  await axios.post("http://localhost:3001/bank/transactions", {transaction: props.newTransactionForm})
-  .catch((err) => {
-    props.setError(err)
-    props.setIsCreating(false)
-  })
-  .then(res => {
-    props.setTransactions((prevTransactions) => [...prevTransactions, res?.data?.transaction])
-  })
-  .finally(() => {
-    props.setNewTransactionForm({
-      category: "",
-      description: "",
-      amount: 0
+    props.setIsCreating(true)
+    await axios.post("http://localhost:3001/bank/transactions", {transaction: props.newTransactionForm})
+    .catch((err) => {
+      props.setError(err)
+      props.setIsCreating(false)
     })
-    props.setIsCreating(false)
-  })
+    .then(res => {
+      props.setTransactions((prevTransactions) => [...prevTransactions, res?.data?.transaction])
+    })
+    .finally(() => {
+      props.setNewTransactionForm({
+        category: "",
+        description: "",
+        amount: 0
+      })
+      props.setIsCreating(false)
+    })
 
 
   }
