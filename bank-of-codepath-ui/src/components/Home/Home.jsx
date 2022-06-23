@@ -6,7 +6,6 @@ import axios from "axios"
 import { useEffect } from "react"
 
 export default function Home(props) {
-  console.log("Inside of Home function", props.isLoading)
   const filteredTransactions = props.filterInputValue ? props?.transactions.filter((transaction) => 
     transaction.description.toLowerCase().indexOf(props.filterInputValue.toLowerCase()) !== -1) : props?.transactions
   
@@ -17,18 +16,15 @@ export default function Home(props) {
       if(transactionsData && transactionsData.transactions) {
         props.setTransactions(transactionsData.transactions)
       }
-
       const transfersResult = await axios.get("http://localhost:3001/bank/transfers")
       const transfersData = transfersResult.data
       if(transfersData && transfersData.transfers) {
         props.setTransfers(transfersData.transfers)
       }
     } catch (err) {
-        props.setError(err)
-        
+        props.setError(err)  
     } finally {
-      props.setIsLoading(false)
-    
+      props.setIsLoading(false) 
     }
   }
 
@@ -71,9 +67,12 @@ export default function Home(props) {
         handleOnSubmit = {handleOnCreateTransaction}
       />  
       {
-        props.isLoading ? <h1>Loading...</h1> : <BankActivity transactions={filteredTransactions} transfers={props.transfers}/>
+        props.error ? <h2 className="error">Error message</h2> : null
       }
-
+      {
+      props.isLoading ? <h1>Loading...</h1> : <BankActivity transactions={filteredTransactions} transfers={props.transfers}/>
+      }
+      
     </div>
   )
 }

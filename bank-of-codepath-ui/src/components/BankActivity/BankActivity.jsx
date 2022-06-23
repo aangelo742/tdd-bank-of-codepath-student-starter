@@ -1,9 +1,9 @@
 import * as React from "react"
 import { formatDate, formatAmount } from "../../utils/format"
 import "./BankActivity.css"
+import { Link } from "react-router-dom"
 
 export default function BankActivity(props) {
-  console.log("BankActivity: ", props.transactions)
   if(props.transactions) {
     return (
       <div className="bank-activity">
@@ -16,11 +16,14 @@ export default function BankActivity(props) {
             <span className="col x15">Date</span>
           </div>
           {
-            props.transactions.map((transaction) => {
+            props.transactions?.map((transaction) => {
               return (
-                <TransactionRow
+                <Link to={`/transactions/${transaction.id}`}>
+                  <TransactionRow
                   transaction = {transaction}
-                />
+                  />
+                </Link>
+                
               )                   
           })}
         </div>
@@ -34,15 +37,17 @@ export default function BankActivity(props) {
             <span className="col x15">Date</span>
           </div>
           {
-            props.transfers.map((transfer) => {
+            props.transfers?.map((transfer) => {
               return (
                 <TransferRow
                   transfer = {transfer}
                 />
+                
               )                   
           })}
         </div>
       </div>
+
     )
   } else {
     return null
@@ -51,7 +56,7 @@ export default function BankActivity(props) {
 }
 
 export function TransactionRow({ transaction = {} }) {
-  let time = new Date(transaction.postedAt)
+  let time = (transaction.postedAt)
   console.log(time)
   return (
     <div className="table-row transaction-row">
@@ -67,6 +72,7 @@ export function TransactionRow({ transaction = {} }) {
 }
 
 export function TransferRow({ transfer = {} }) {
+  console.log("transferRow: ", transfer.postedAt)
   return (
     <div className="table-row transfer-row">
       <span className="col x4">
@@ -75,7 +81,7 @@ export function TransferRow({ transfer = {} }) {
       </span>
       <span className="col x2">{transfer.recipientEmail}</span>
       <span className="col x2">{formatAmount(transfer.amount)}</span>
-      <span className="col x15">{formatDate(transfer.postedAt)}</span>
+      <span className="col x15">{transfer.postedAt}</span>
     </div>
   )
 }
