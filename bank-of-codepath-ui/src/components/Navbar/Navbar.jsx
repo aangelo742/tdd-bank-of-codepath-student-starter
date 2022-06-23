@@ -6,7 +6,7 @@ import "./Navbar.css"
 import { Link } from "react-router-dom"
 
 export default function Navbar(props) {
-  console.log("Inside of Navbar function: ", props.filterInputValue)
+  //console.log("Inside of Navbar function: ", props.filterInputValue)
   const handleOnInputChange = e => {
     props.setFilterInputValue(e.target.value)
   }
@@ -41,8 +41,6 @@ export default function Navbar(props) {
 
 export function Logo(props) {
   return (
-    <a className="logo">
-      <Link to={props.path}><img src={codepath} alt="logo" /></Link>
-    </a>
+      <Link to={props.path} className="logo"><img src={codepath} alt="logo" /></Link>
   )
 }

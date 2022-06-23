@@ -2,35 +2,57 @@ import * as React from "react"
 import { formatDate, formatAmount } from "../../utils/format"
 import "./BankActivity.css"
 
-export default function BankActivity() {
-  return (
-    <div className="bank-activity">
-      <h2>Transactions</h2>
-      <div className="table">
-        <div className="table-header table-row">
-          <span className="col x4">Description</span>
-          <span className="col x2">Category</span>
-          <span className="col x2">Amount</span>
-          <span className="col x15">Date</span>
+export default function BankActivity(props) {
+  console.log("BankActivity: ", props.transactions)
+  if(props.transactions) {
+    return (
+      <div className="bank-activity">
+        <h2>Transactions</h2>
+        <div className="table">
+          <div className="table-header table-row">
+            <span className="col x4">Description</span>
+            <span className="col x2">Category</span>
+            <span className="col x2">Amount</span>
+            <span className="col x15">Date</span>
+          </div>
+          {
+            props.transactions.map((transaction) => {
+              return (
+                <TransactionRow
+                  transaction = {transaction}
+                />
+              )                   
+          })}
         </div>
-        {/* */}
-      </div>
-
-      <h2>Transfers</h2>
-      <div className="table">
-        <div className="table-header table-row">
-          <span className="col x4">Memo</span>
-          <span className="col x2">Recipient</span>
-          <span className="col x2">Amount</span>
-          <span className="col x15">Date</span>
+  
+        <h2>Transfers</h2>
+        <div className="table">
+          <div className="table-header table-row">
+            <span className="col x4">Memo</span>
+            <span className="col x2">Recipient</span>
+            <span className="col x2">Amount</span>
+            <span className="col x15">Date</span>
+          </div>
+          {
+            props.transfers.map((transfer) => {
+              return (
+                <TransferRow
+                  transfer = {transfer}
+                />
+              )                   
+          })}
         </div>
-        {/* */}
       </div>
-    </div>
-  )
+    )
+  } else {
+    return null
+  }
+  
 }
 
 export function TransactionRow({ transaction = {} }) {
+  let time = new Date(transaction.postedAt)
+  console.log(time)
   return (
     <div className="table-row transaction-row">
       <span className="col x4">
@@ -39,7 +61,7 @@ export function TransactionRow({ transaction = {} }) {
       </span>
       <span className="col x2">{transaction.category}</span>
       <span className="col x2">{formatAmount(transaction.amount)}</span>
-      <span className="col x15">{formatDate(transaction.postedAt)}</span>
+      <span className="col x15">{transaction.postedAt}</span>
     </div>
   )
 }
