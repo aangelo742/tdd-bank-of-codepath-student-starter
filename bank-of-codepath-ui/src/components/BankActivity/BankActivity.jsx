@@ -17,14 +17,12 @@ export default function BankActivity(props) {
           </div>
           {
             props.transactions?.map((transaction) => {
-              console.log("ID: ", transaction.id)
+              //console.log("ID: ", transaction.id)
               return (
-                <Link to={`/transactions/${transaction.id}`}>
-                  <TransactionRow
-                  key = {transaction.id}
-                  transaction = {transaction}
-                  />
-                </Link>
+                <TransactionRow
+                key = {transaction.id}
+                transaction = {transaction}
+                />
                 
               )                   
           })}
@@ -40,7 +38,7 @@ export default function BankActivity(props) {
           </div>
           {
             props.transfers?.map((transfer) => {
-              console.log("ID: ", transfer.id)
+              //console.log("ID: ", transfer.id)
               return (
                 <TransferRow
                   key = {transfer.id}
@@ -61,9 +59,9 @@ export default function BankActivity(props) {
 
 export function TransactionRow({ transaction = {} }) {
   let time = (transaction.postedAt)
-  console.log(time)
+  //console.log(time)
   return (
-    <div className="table-row transaction-row">
+    <Link to={`/transactions/${transaction.id}`} className="table-row transaction-row">
       <span className="col x4">
         <Arrow amount={transaction.amount} />
         {transaction.description}
@@ -71,12 +69,14 @@ export function TransactionRow({ transaction = {} }) {
       <span className="col x2">{transaction.category}</span>
       <span className="col x2">{formatAmount(transaction.amount)}</span>
       <span className="col x15">{transaction.postedAt}</span>
-    </div>
-  )
+    </Link>
+  )     
+    
+      
 }
 
 export function TransferRow({ transfer = {} }) {
-  console.log("transferRow: ", transfer.postedAt)
+  //console.log("transferRow: ", transfer.postedAt)
   return (
     <div className="table-row transfer-row">
       <span className="col x4">

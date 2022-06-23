@@ -1,8 +1,41 @@
 import * as React from "react"
 import { formatAmount, formatDate } from "../../utils/format"
 import "./TransactionDetail.css"
+import { useState, useEffect } from "react"
+import { useParams } from "react-router-dom"
+import axios from "axios"
 
 export default function TransactionDetail() {
+  const transactionId = useParams()?.transactionId
+
+  console.log("TransactionDetail: ", transactionId)
+
+  const [hasFetched, setHasFetched] = useState(false)
+  const [transaction, setTransaction] = useState({})
+  const [isLoading, setIsLoading] = useState()
+  const [error, setError] = useState()
+
+  const fetchTransactionId = async () => {
+    setIsLoading(true)
+    setHasFetched(false)
+
+    await axios.get(`http://localhost:3001/bank/transactions/${transactionId}`)
+      .then(res => {
+        console.log(res)
+        setTransaction(res.data.transaction)
+      })
+      .catch(error => {
+        setError(error)
+      })
+
+      setIsLoading(false)
+      setHasFetched(true)
+  }
+
+  useEffect(() => {
+    fetchTransactionId()
+  }, [transactionId])
+
   return (
     <div className="transaction-detail">
       <TransactionCard />
